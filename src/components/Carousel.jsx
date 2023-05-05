@@ -1,16 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+const images = [
+  "https://source.unsplash.com/random/500x300/?burger",
+  "https://source.unsplash.com/random/500x300/?juice",
+  "https://source.unsplash.com/random/500x300/?pizza",
+];
 
 export default function Carousel() {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      await Promise.all(
+        images.map((image) =>
+          new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = image;
+            img.onload = resolve;
+            img.onerror = reject;
+          })
+        )
+      );
+      setLoaded(true);
+    };
+    loadImages();
+  }, []);
+
+  if (!loaded) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <div
         id="carouselExampleFade"
         className="carousel slide carousel-fade"
         data-bs-ride="carousel"
-        style={{objectFit: 'contain !important'}}
+        style={{ objectFit: "contain !important" }}
       >
         <div className="carousel-inner" id="carousel">
-          <div className="carousel-caption" style={{zIndex: '10'}}>
+          <div className="carousel-caption" style={{ zIndex: "10" }}>
             <form className="d-flex">
               <input
                 className="form-control me-2"
@@ -18,33 +47,36 @@ export default function Carousel() {
                 placeholder="Search"
                 aria-label="Search"
               />
-              <button className="btn btn-outline-success text-white bg-success" type="submit">
+              <button
+                className="btn btn-outline-success text-white bg-success"
+                type="submit"
+              >
                 Search
               </button>
             </form>
           </div>
           <div className="carousel-item active">
             <img
-              src="https://source.unsplash.com/random/900x700/?burger"
+              src={images[0]}
               className="d-block w-100"
               alt="Carousel Img"
-              style={{filter: 'brightness(30%)'}}
+              style={{ filter: "brightness(30%)" }}
             />
           </div>
           <div className="carousel-item">
             <img
-              src="https://source.unsplash.com/random/900x700/?juice"
+              src={images[1]}
               className="d-block w-100"
               alt="Carousel Img"
-              style={{filter: 'brightness(30%)'}}
+              style={{ filter: "brightness(30%)" }}
             />
           </div>
           <div className="carousel-item">
             <img
-              src="https://source.unsplash.com/random/900x700/?pizza"
+              src={images[2]}
               className="d-block w-100"
               alt="Carousel Img"
-              style={{filter: 'brightness(30%)'}}
+              style={{ filter: "brightness(30%)" }}
             />
           </div>
         </div>
