@@ -9,9 +9,15 @@ const mongoDB = async () => {
             useUnifiedTopology: true
         });
         console.log('Connected to MongoDB');
-        const fetched_data = await mongoose.connection.db.collection('foodCategory');
+        const fetched_data = await mongoose.connection.db.collection('food_items');
         const data = await fetched_data.find({}).toArray();
+        const foodCategory = await mongoose.connection.db.collection('foodCategory');
+        const catData = await foodCategory.find({}).toArray();
+        // console.log(catData);
         // console.log(data);
+        global.food_items = data;
+        global.foodCategory = catData;
+        // console.log(global.food_items);
     } catch (error) {
         console.error(error);
     }
